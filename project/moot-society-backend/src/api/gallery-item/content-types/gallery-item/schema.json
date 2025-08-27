@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "gallery_items",
+  "info": {
+    "singularName": "gallery-item",
+    "pluralName": "gallery-items",
+    "displayName": "GalleryItem"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "blocks"
+    },
+    "Category": {
+      "type": "enumeration",
+      "enum": [
+        "Throwbacks",
+        "Committee",
+        "Special Events"
+      ]
+    },
+    "image": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  }
+}

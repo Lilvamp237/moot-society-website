@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "competitions",
+  "info": {
+    "singularName": "competition",
+    "pluralName": "competitions",
+    "displayName": "Competition"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "blocks"
+    },
+    "year": {
+      "type": "biginteger"
+    },
+    "result": {
+      "type": "string"
+    },
+    "team_members": {
+      "type": "string"
+    }
+  }
+}

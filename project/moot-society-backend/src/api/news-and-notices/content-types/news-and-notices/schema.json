@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "news_and_noticess",
+  "info": {
+    "singularName": "news-and-notices",
+    "pluralName": "news-and-noticess",
+    "displayName": "News and Notices"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "blocks"
+    },
+    "date": {
+      "type": "date"
+    },
+    "link": {
+      "type": "string"
+    }
+  }
+}

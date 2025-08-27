@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "achievementss",
+  "info": {
+    "singularName": "achievements",
+    "pluralName": "achievementss",
+    "displayName": "Achievements"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "year": {
+      "type": "biginteger"
+    },
+    "title": {
+      "type": "string"
+    },
+    "details": {
+      "type": "blocks"
+    },
+    "team_members": {
+      "type": "string"
+    }
+  }
+}
