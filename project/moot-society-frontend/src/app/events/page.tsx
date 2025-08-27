@@ -2,7 +2,6 @@
 import React from 'react';
 
 // --- TYPE DEFINITION ---
-// This defines the "shape" of our event data from Strapi
 interface StrapiEvent {
   id: number;
   Title: string;
@@ -12,10 +11,11 @@ interface StrapiEvent {
 }
 
 // --- DATA FETCHING FUNCTION ---
-// This is the same async function we used before to get data from Strapi
 async function getEvents(): Promise<StrapiEvent[]> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/events`);
+    // Let's sort the events by date directly from the API
+    // 'sort=Date:desc' means sort by Date in descending order (newest first)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/events?sort=Date:desc`);
 
     if (!res.ok) {
       throw new Error(`Failed to fetch data: ${res.statusText}`);
@@ -26,44 +26,76 @@ async function getEvents(): Promise<StrapiEvent[]> {
 
   } catch (error) {
     console.error("Error fetching events:", error);
-    return []; // Return an empty array on error to avoid a crash
+    return [];
   }
 }
 
-// --- THE PAGE COMPONENT ---
+// --- REUSABLE COMPONENT for a single event card ---
+// This avoids repeating JSX and makes the main component cleaner.
+const EventCard = ({ event }: { event: StrapiEvent }) => (
+  <div
+    className="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow-lg
+               transform hover:-translate-y-1 transition-transform duration-300 flex flex-col"
+  >
+    <h3 className="text-2xl font-bold mb-2 flex-grow">{event.Title}</h3>
+    <p className="text-gray-400 mb-4">
+      {new Date(event.Date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })}
+    </p>
+    <p className="text-gray-300 mb-4">{event.Description}</p>
+    <p className="font-semibold text-white mt-auto">Location: {event.Location}</p>
+  </div>
+);
+
+// --- THE MAIN PAGE COMPONENT ---
 export default async function EventsPage() {
   const events = await getEvents();
 
+  // --- FILTERING LOGIC ---
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Normalize to the start of the day for accurate comparison
+
+  const upcomingEvents = events.filter(event => new Date(event.Date) >= today);
+  // For past events, we'll reverse the array to show the most recent past event first.
+  const pastEvents = events.filter(event => new Date(event.Date) < today);
+
+
   return (
     <div className="container mx-auto p-4 py-8">
-      <h1 className="text-5xl font-bold text-center mb-12 uppercase tracking-wide">
+      <h1 className="text-5xl font-bold text-center mb-16 uppercase tracking-wide">
         Events & Competitions
       </h1>
 
-      {events && events.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {events.map((event) => (
-            <div
-              key={event.id}
-              className="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow-lg
-                         transform hover:-translate-y-1 transition-transform duration-300"
-            >
-              <h2 className="text-2xl font-bold mb-2">{event.Title}</h2>
-              <p className="text-gray-400 mb-4">
-                {new Date(event.Date).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
-              </p>
-              <p className="text-gray-300 mb-4">{event.Description}</p>
-              <p className="font-semibold text-white">Location: {event.Location}</p>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p className="text-center text-gray-400">No events found.</p>
-      )}
+      {/* Upcoming Events Section */}
+      <section>
+        <h2 className="text-3xl font-semibold mb-6 border-l-4 border-white pl-4">Upcoming Events</h2>
+        {upcomingEvents.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {upcomingEvents.map((event) => (
+              <EventCard key={event.id} event={event} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-400 ml-4">No upcoming events scheduled. Please check back soon!</p>
+        )}
+      </section>
+
+      {/* Past Events Section */}
+      <section className="mt-16">
+        <h2 className="text-3xl font-semibold mb-6 border-l-4 border-white pl-4">Past Events</h2>
+        {pastEvents.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {pastEvents.map((event) => (
+              <EventCard key={event.id} event={event} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-400 ml-4">No past event information available.</p>
+        )}
+      </section>
     </div>
   );
 }
