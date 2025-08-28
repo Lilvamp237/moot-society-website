@@ -14,14 +14,14 @@
     "title": {
       "type": "string"
     },
-    "content": {
-      "type": "blocks"
-    },
     "date": {
       "type": "date"
     },
     "link": {
       "type": "string"
+    },
+    "content": {
+      "type": "text"
     }
   }
 }
