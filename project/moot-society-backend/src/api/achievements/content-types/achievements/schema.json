@@ -17,11 +17,11 @@
     "title": {
       "type": "string"
     },
-    "details": {
-      "type": "blocks"
-    },
     "team_members": {
       "type": "string"
+    },
+    "details": {
+      "type": "text"
     }
   }
 }

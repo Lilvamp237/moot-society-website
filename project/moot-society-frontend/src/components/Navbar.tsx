@@ -13,12 +13,13 @@ const Navbar = () => {
           <Link href="/events" className="hover:text-gray-400 transition-colors">Events</Link>
           <Link href="/news" className="hover:text-gray-400 transition-colors">News</Link>
           <Link href="/gallery" className="hover:text-gray-400 transition-colors">Gallery</Link>
+          {/* --- ADD THIS NEW LINK --- */}
+          <Link href="/achievements" className="hover:text-gray-400 transition-colors">Achievements</Link>
           <Link href="/faq" className="hover:text-gray-400 transition-colors">FAQs</Link>
           <Link href="/contact" className="bg-white text-black px-4 py-2 rounded-full font-semibold hover:bg-gray-300 transition-colors">
             Contact Us
           </Link>
         </div>
-        {/* You can add a mobile menu button here later */}
       </div>
     </nav>
   );

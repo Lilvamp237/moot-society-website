@@ -1,101 +1,92 @@
 // src/app/events/page.tsx
-import React from 'react';
+'use client';
 
-// --- TYPE DEFINITION ---
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
+import EventModal from '@/components/EventModal';
+
+// --- START: CORRECTED TYPE DEFINITIONS ---
+// This now matches the simple BannerImage object from your API data
+interface BannerImageObject {
+  url: string;
+  alternativeText?: string | null;
+}
+// This is the final, correct shape of your event object
 interface StrapiEvent {
   id: number;
   Title: string;
   Description: string;
-  Date: string;
-  Location: string;
+  BannerImage: BannerImageObject;
 }
+// --- END: CORRECTED TYPE DEFINITIONS ---
 
-// --- DATA FETCHING FUNCTION ---
-async function getEvents(): Promise<StrapiEvent[]> {
-  try {
-    // Let's sort the events by date directly from the API
-    // 'sort=Date:desc' means sort by Date in descending order (newest first)
-    const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/events?sort=Date:desc`);
+const EventCard = ({ event, onReadMoreClick }: { event: StrapiEvent; onReadMoreClick: () => void; }) => {
+  // THE FIX IS HERE: The path is now simple and direct
+  const imageUrl = event.BannerImage?.url;
+  const fullImageUrl = imageUrl ? `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${imageUrl}` : '/placeholder.jpg';
+  const altText = event.BannerImage?.alternativeText || event.Title;
 
-    if (!res.ok) {
-      throw new Error(`Failed to fetch data: ${res.statusText}`);
+  const snippet = event.Description.substring(0, 150) + '...';
+
+  return (
+    <div className="bg-gray-900 border border-gray-700 rounded-lg shadow-lg overflow-hidden flex flex-col">
+      {imageUrl && (
+        <div className="relative w-full h-48">
+          <Image src={fullImageUrl} alt={altText} layout="fill" objectFit="cover" />
+        </div>
+      )}
+      <div className="p-6 flex flex-col flex-grow">
+        <h3 className="text-2xl font-bold mb-2">{event.Title}</h3>
+        <p className="text-gray-400 mb-4 flex-grow">{snippet}</p>
+        <button
+          onClick={onReadMoreClick}
+          className="mt-auto bg-white text-black px-4 py-2 rounded-full font-semibold hover:bg-gray-300 transition-colors self-start"
+        >
+          Read More
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default function EventsPage() {
+  const [events, setEvents] = useState<StrapiEvent[]>([]);
+  const [selectedEvent, setSelectedEvent] = useState<StrapiEvent | null>(null);
+
+  useEffect(() => {
+    async function fetchEvents() {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/events?populate=*`);
+        if (!res.ok) throw new Error('Failed to fetch data');
+        const data = await res.json();
+        setEvents(data.data);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
     }
-
-    const data = await res.json();
-    return data.data;
-
-  } catch (error) {
-    console.error("Error fetching events:", error);
-    return [];
-  }
-}
-
-// --- REUSABLE COMPONENT for a single event card ---
-// This avoids repeating JSX and makes the main component cleaner.
-const EventCard = ({ event }: { event: StrapiEvent }) => (
-  <div
-    className="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow-lg
-               transform hover:-translate-y-1 transition-transform duration-300 flex flex-col"
-  >
-    <h3 className="text-2xl font-bold mb-2 flex-grow">{event.Title}</h3>
-    <p className="text-gray-400 mb-4">
-      {new Date(event.Date).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      })}
-    </p>
-    <p className="text-gray-300 mb-4">{event.Description}</p>
-    <p className="font-semibold text-white mt-auto">Location: {event.Location}</p>
-  </div>
-);
-
-// --- THE MAIN PAGE COMPONENT ---
-export default async function EventsPage() {
-  const events = await getEvents();
-
-  // --- FILTERING LOGIC ---
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // Normalize to the start of the day for accurate comparison
-
-  const upcomingEvents = events.filter(event => new Date(event.Date) >= today);
-  // For past events, we'll reverse the array to show the most recent past event first.
-  const pastEvents = events.filter(event => new Date(event.Date) < today);
-
+    fetchEvents();
+  }, []);
 
   return (
     <div className="container mx-auto p-4 py-8">
       <h1 className="text-5xl font-bold text-center mb-16 uppercase tracking-wide">
         Events & Competitions
       </h1>
-
-      {/* Upcoming Events Section */}
       <section>
-        <h2 className="text-3xl font-semibold mb-6 border-l-4 border-white pl-4">Upcoming Events</h2>
-        {upcomingEvents.length > 0 ? (
+        {events.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {upcomingEvents.map((event) => (
-              <EventCard key={event.id} event={event} />
+            {events.map((event) => (
+              <EventCard key={event.id} event={event} onReadMoreClick={() => setSelectedEvent(event)} />
             ))}
           </div>
         ) : (
-          <p className="text-gray-400 ml-4">No upcoming events scheduled. Please check back soon!</p>
+          <p className="text-center text-gray-400">Loading events...</p>
         )}
       </section>
 
-      {/* Past Events Section */}
-      <section className="mt-16">
-        <h2 className="text-3xl font-semibold mb-6 border-l-4 border-white pl-4">Past Events</h2>
-        {pastEvents.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {pastEvents.map((event) => (
-              <EventCard key={event.id} event={event} />
-            ))}
-          </div>
-        ) : (
-          <p className="text-gray-400 ml-4">No past event information available.</p>
-        )}
-      </section>
+      {selectedEvent && (
+        <EventModal event={selectedEvent} onClose={() => setSelectedEvent(null)} />
+      )}
     </div>
   );
 }

@@ -15,7 +15,7 @@
       "type": "string"
     },
     "answer": {
-      "type": "blocks"
+      "type": "text"
     }
   }
 }

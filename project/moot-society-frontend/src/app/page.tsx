@@ -1,9 +1,7 @@
 // src/app/page.tsx
 import React from 'react';
 
-// You can keep the event fetching logic if you want to show
-// a few upcoming events on the homepage. For now, let's focus on design.
-
+// This is the correct code for your homepage.
 export default function HomePage() {
   return (
     <div className="container mx-auto p-4 text-center">
@@ -25,7 +23,7 @@ export default function HomePage() {
       {/* About Us Section */}
       <section className="my-16">
         <div className="max-w-3xl mx-auto">
-          <h3 className="text-3xl font-bold mb-4 uppercase">Who are We?</h3>
+          <h3 className="text-3xl font-bold mb-4 uppercase">VEZA [veh-zah]</h3>
           <p className="text-lg text-gray-400">
             The Moot Society is a full-service student organization dedicated to
             fostering the art of advocacy, legal research, and oral argumentation.
@@ -33,8 +31,6 @@ export default function HomePage() {
           </p>
         </div>
       </section>
-
-      {/* You could add a section for featured events here later */}
     </div>
   );
 }

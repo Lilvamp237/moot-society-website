@@ -17,12 +17,6 @@
     "Description": {
       "type": "text"
     },
-    "Date": {
-      "type": "date"
-    },
-    "Location": {
-      "type": "string"
-    },
     "BannerImage": {
       "type": "media",
       "multiple": false,

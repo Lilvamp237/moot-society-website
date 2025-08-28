@@ -1,7 +1,19 @@
-import type { NextConfig } from "next";
+// next.config.ts
 
-const nextConfig: NextConfig = {
-  /* config options here */
+import type { NextConfig } from 'next';
+
+const config: NextConfig = {
+  // THIS IS THE PART YOU NEED TO ADD
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '1337',
+        pathname: '/uploads/**', // Allows any image from the 'uploads' folder
+      },
+    ],
+  },
 };
 
-export default nextConfig;
+export default config;
