@@ -8,7 +8,7 @@ export default function HomePage() {
       {/* Hero Section with Tagline */}
       <section className="min-h-[70vh] flex flex-col justify-center items-center text-center py-16 px-4">
         <div className="space-y-6 md:space-y-8">
-          <h1 className="text-5xl md:text-7xl font-bold uppercase leading-tight tracking-wider animate-fade-in-up">
+          <h1 className="font-serif text-5xl md:text-7xl font-bold uppercase leading-tight tracking-wider animate-fade-in-up">
             Ideas Connect
           </h1>
           <h2 className="text-4xl md:text-6xl font-medium uppercase border-2 border-white rounded-full px-8 py-4 inline-block leading-snug animate-fade-in-up delay-200">

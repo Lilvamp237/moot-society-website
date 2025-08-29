@@ -1,10 +1,33 @@
 /* src/app/globals.css */
-
 @import "tailwindcss";
 
 /*
-  DELETE EVERYTHING ELSE.
-  The :root {...}, @theme {...}, @media {...}, and body {...} rules
-  that were here before are what caused the white background.
-  They must be removed.
+  Define our color variables for different themes.
+  We can switch the entire site's look just by changing the class on the body tag.
 */
+
+/* THEME 1: ELEGANT BLACK */
+.theme-black {
+  --background: #0a0a0a; /* A slightly softer black */
+  --foreground: #ededed; /* A soft white for text */
+  --secondary-bg: #171717; /* For cards and sections */
+  --border-color: #262626; /* For subtle borders */
+  --accent-gold: #D4AF37; /* Our primary gold accent */
+  --accent-gold-hover: #E4C878; /* A lighter gold for hover effects */
+}
+
+/* THEME 2: MIDNIGHT BLUE (with Gradient) */
+.theme-blue {
+  --background: #14213d; /* The darker blue for the main background */
+  --foreground: #e0e1dd;
+  --secondary-bg: #1b263b; /* The lighter blue for component boxes */
+  --border-color: #415a77;
+}
+/* --- END: UPDATED BLUE THEME --- */
+
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  min-height: 100vh; /* Ensures background covers the full page */
+}

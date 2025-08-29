@@ -1,10 +1,18 @@
 // src/app/layout.tsx
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar"; // Import the Navbar
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  variable: '--font-inter', // Create a CSS variable for Inter
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: '--font-playfair', // Create a CSS variable for Playfair Display
+});
 
 export const metadata: Metadata = {
   title: "Moot Society",
@@ -17,11 +25,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} bg-black text-white`}>
-        <Navbar /> {/* Add the Navbar here */}
+    // Combine the font variables in the html tag
+    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
+      {/*
+        THIS IS THE MAGIC SWITCH!
+        Change 'theme-black' to 'theme-blue' to change the entire site's colors.
+      */}
+      <body className="theme-blue">
+        <Navbar />
         <main>{children}</main>
-        {/* We can add a Footer component here later */}
       </body>
     </html>
   );
