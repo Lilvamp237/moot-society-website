@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Lightbox from '@/components/LightBox'; // Import our new component
+import Lightbox from '@/components/Lightbox'; // Import our new component
 
 // --- TYPE DEFINITIONS ---
 interface StrapiImage {
