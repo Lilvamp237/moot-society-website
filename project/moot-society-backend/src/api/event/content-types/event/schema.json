@@ -26,6 +26,13 @@
         "videos",
         "audios"
       ]
+    },
+    "EventType": {
+      "type": "enumeration",
+      "enum": [
+        "Competition",
+        "Special_Event"
+      ]
     }
   }
 }

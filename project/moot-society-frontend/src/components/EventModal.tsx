@@ -5,23 +5,20 @@ import React from 'react';
 import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
 
-// --- START: CORRECTED TYPE DEFINITIONS ---
-interface BannerImageObject {
-  url: string;
-  alternativeText?: string | null;
-}
+// --- START: CORRECTED TYPE DEFINITIONS (FLAT) ---
+interface StrapiImage { url: string; alternativeText?: string | null; }
 interface StrapiEvent {
   id: number;
   Title: string;
   Description: string;
-  BannerImage: BannerImageObject;
+  BannerImage: StrapiImage;
+  EventType: 'Competition' | 'Special_Event';
 }
 // --- END: CORRECTED TYPE DEFINITIONS ---
 
 export default function EventModal({ event, onClose }: { event: StrapiEvent; onClose: () => void; }) {
+  // Access all properties directly from the event object
   const { Title, Description, BannerImage } = event;
-
-  // THE FIX IS HERE: The path is now simple and direct
   const imageUrl = BannerImage?.url;
   const fullImageUrl = imageUrl ? `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${imageUrl}` : '/placeholder.jpg';
   const altText = BannerImage?.alternativeText || Title;
@@ -33,7 +30,13 @@ export default function EventModal({ event, onClose }: { event: StrapiEvent; onC
         
         {imageUrl && (
           <div className="relative w-full h-64">
-            <Image src={fullImageUrl} alt={altText} layout="fill" objectFit="cover" className="rounded-t-lg" />
+            <Image
+              src={fullImageUrl}
+              alt={altText}
+              fill
+              sizes="(max-width: 768px) 100vw, 896px"
+              className="object-cover rounded-t-lg"
+            />
           </div>
         )}
         
