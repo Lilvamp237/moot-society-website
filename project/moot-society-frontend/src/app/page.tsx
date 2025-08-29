@@ -22,18 +22,19 @@ export default function HomePage() {
       </section>
 
       {/* About Us Section */}
-      <section className="my-24 py-16 bg-gray-900 rounded-lg shadow-xl px-6 md:px-12 text-center">
+      <section className="my-24 py-16 bg-gray-900 rounded-lg shadow-xl px-6 md:px-12">
         <div className="max-w-4xl mx-auto">
-          <h3 className="text-4xl font-bold mb-8 uppercase text-white border-b-2 border-white pb-4 inline-block">
+          <h3 className="text-4xl font-bold mb-8 uppercase text-white border-b-2 border-white pb-4 inline-block text-center w-full">
             About Us
           </h3>
-          <p className="text-lg md:text-xl text-gray-300 leading-relaxed mb-6">
+          {/* --- THE FIX IS HERE: 'text-justify' has been added to the paragraphs --- */}
+          <p className="text-lg md:text-xl text-gray-300 leading-relaxed mb-6 text-justify">
             The Moot Society of Sri Lanka Law College stands as one of the oldest and most prestigious student-led societies within the institution. Although the tradition of mooting at Sri Lanka Law College dates back to its establishment in 1873 following the formation of the Council of Legal Education - the Moot Society itself was officially founded in 1986.
           </p>
-          <p className="text-lg md:text-xl text-gray-300 leading-relaxed mb-6">
+          <p className="text-lg md:text-xl text-gray-300 leading-relaxed mb-6 text-justify">
             Recognizing the growing importance of advocacy training and experiential learning, a group of visionary students spearheaded the formation of the society to cultivate mooting skills and offer structured opportunities for aspiring legal professionals to gain courtroom experience. This initiative was led by Mr. ___________ and Ms. ____________, who served as the first President and Secretary, respectively.
           </p>
-          <p className="text-lg md:text-xl text-gray-300 leading-relaxed">
+          <p className="text-lg md:text-xl text-gray-300 leading-relaxed text-justify">
             Their efforts were strongly supported by Mr. _______, the Principal of Sri Lanka Law College at the time, whose encouragement and guidance were instrumental in establishing the society. Since its inception, the Moot Society has continued to thrive as a platform dedicated to enhancing the oral and written advocacy skills of students, preparing them for the demands of legal practice both locally and internationally.
           </p>
         </div>
