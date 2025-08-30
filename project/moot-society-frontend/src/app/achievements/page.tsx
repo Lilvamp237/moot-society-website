@@ -50,23 +50,29 @@ export default async function AchievementsPage() {
         {Object.keys(groupedAchievements).length > 0 ? (
           Object.keys(groupedAchievements).map(year => (
             <section key={year}>
-              <h2 className="text-4xl font-semibold mb-6 border-l-4 border-white pl-4">{year}</h2>
-              <div className="space-y-8">
-                {groupedAchievements[parseInt(year)].map(achievement => (
-                  <div key={achievement.id} className="bg-gray-900 border border-gray-700 rounded-lg p-6">
-                    <h3 className="text-2xl font-bold mb-3">{achievement.title}</h3>
-                    {achievement.team_members && (
-                      <p className="text-gray-400 mb-4">
-                        <strong>Team:</strong> {achievement.team_members}
-                      </p>
-                    )}
-                    <article className="prose prose-invert max-w-none">
-                      <ReactMarkdown>{achievement.details}</ReactMarkdown>
-                    </article>
-                  </div>
-                ))}
-              </div>
-            </section>
+  <h2 className="text-4xl font-semibold mb-6 border-l-4 border-white pl-4">{year}</h2>
+  <div className="space-y-8">
+    {groupedAchievements[parseInt(year)].map(achievement => (
+      <div
+        key={achievement.id}
+        className="bg-gray-900 border border-gray-700 rounded-lg p-6"
+      >
+        <h3 className="text-2xl font-bold mb-3">{achievement.title}</h3>
+
+        <article className="prose prose-invert max-w-none">
+          <ReactMarkdown>{achievement.details}</ReactMarkdown>
+        </article>
+
+        {achievement.team_members && (
+          <p className="text-gray-400 mt-4">
+            <strong>Team:</strong> {achievement.team_members}
+          </p>
+        )}
+      </div>
+    ))}
+  </div>
+</section>
+
           ))
         ) : (
           <p className="text-center text-gray-400">No achievements have been recorded yet.</p>
