@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Preloader from "@/components/Preloader";
+import ScrollToTop from "@/components/ScrollToTop"; // <-- 1. IMPORT THE SCROLL COMPONENT
 
 const inter = Inter({
   subsets: ["latin"],
@@ -28,7 +29,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
-      <body className="theme-blue flex flex-col min-h-screen">
+      {/* --- THE FIX IS HERE: Added 'bg-black' and 'text-white' back in --- */}
+      <body className="theme-blue flex flex-col min-h-screen bg-black text-white">
+        <ScrollToTop /> {/* <-- 2. ADD THE SCROLL COMPONENT HERE */}
         <Preloader />
         <Navbar />
         <main className="flex-grow">{children}</main>
