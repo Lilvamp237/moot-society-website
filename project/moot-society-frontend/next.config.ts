@@ -3,7 +3,7 @@
 import type { NextConfig } from 'next';
 
 const config: NextConfig = {
-  // THIS IS THE PART YOU NEED TO ADD
+  // Image settings
   images: {
     remotePatterns: [
       {
@@ -14,21 +14,16 @@ const config: NextConfig = {
       },
     ],
   },
-};
 
-export default config;
-
-
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+  // Skip ESLint errors during builds
   eslint: {
-    // Skip ESLint errors during builds
     ignoreDuringBuilds: true,
   },
+
+  // Skip TypeScript type errors during builds
   typescript: {
-    // Skip TS type errors during builds
     ignoreBuildErrors: true,
   },
 };
 
-module.exports = nextConfig;
+export default config;
