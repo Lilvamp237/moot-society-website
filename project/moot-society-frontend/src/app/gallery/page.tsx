@@ -6,18 +6,47 @@ import Image from 'next/image';
 import Lightbox from '@/components/Lightbox'; // Import our new component
 
 // --- TYPE DEFINITIONS ---
+// --- TYPE DEFINITIONS ---
+interface StrapiImageAttributes {
+  url: string;
+  alternativeText?: string | null;
+}
+
 interface StrapiImage {
   id: number;
-  url: string;
-  alternativeText?: string;
+  attributes: StrapiImageAttributes;
 }
+
+interface GalleryItemAttributes {
+  title: string;
+  description: string;
+  Category: string;
+  image: {
+    data: StrapiImage[];
+  };
+}
+
+interface StrapiResponseItem {
+  id: number;
+  attributes: GalleryItemAttributes;
+}
+
+interface StrapiResponse {
+  data: StrapiResponseItem[];
+}
+
 interface GalleryItem {
   id: number;
   title: string;
   description: string;
-  Category: string; // The category field from Strapi
-  image: StrapiImage[]; // An array of images
+  Category: string;
+  image: {
+    id: number;
+    url: string;
+    alternativeText?: string | null;
+  }[];
 }
+
 
 // --- THE MAIN PAGE COMPONENT ---
 export default function GalleryPage() {
@@ -36,14 +65,20 @@ export default function GalleryPage() {
         const data = await res.json();
         
         // Strapi's 'Multiple Media' field is structured differently, we need to flatten it
-        const formattedData = data.data.map((item: any) => ({
-          ...item,
-          image: item.image.map((img: any) => ({
-            id: img.id,
-            url: img.url,
-            alternativeText: img.alternativeText
-          }))
-        }));
+        // Flatten Strapi's multiple media structure
+const formattedData: GalleryItem[] = data.data.map((item: StrapiResponseItem) => ({
+  id: item.id,
+  title: item.attributes.title,
+  description: item.attributes.description,
+  Category: item.attributes.Category,
+  image: (item.attributes.image?.data || []).map((img: StrapiImage) => ({
+    id: img.id,
+    url: img.attributes.url,
+    alternativeText: img.attributes.alternativeText ?? null,
+  })),
+}));
+
+
         setItems(formattedData);
 
       } catch (error) {

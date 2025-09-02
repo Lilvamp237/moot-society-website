@@ -13,7 +13,7 @@ export default function ContactPage() {
         <div className="mb-10 text-center">
           <h2 className="text-3xl font-semibold mb-4 text-white">Get in Touch</h2>
           <p className="text-gray-300 text-lg">
-            We'd love to hear from you. Reach out through any of the channels below.
+            We&apos;d love to hear from you. Reach out through any of the channels below.
           </p>
         </div>
 
