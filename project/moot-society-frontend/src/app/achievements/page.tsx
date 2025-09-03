@@ -14,8 +14,16 @@ interface StrapiAchievement {
 // --- DATA FETCHING FUNCTION ---
 async function getAchievements(): Promise<StrapiAchievement[]> {
   try {
-    // THE FIX IS HERE: The API endpoint is 'achievementss', not 'achievements'.
-    const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/achievementss?sort=year:desc`);
+    // Kept your intentional 'achievementss' endpoint
+    const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/achievementss?sort=year:desc`, {
+      // --- START: THIS IS THE FIX ---
+      // This tells Next.js to check for new data at most once every 60 seconds.
+      // It keeps your site fast while ensuring content gets updated.
+      next: {
+        revalidate: 60 // Revalidate this data every 60 seconds
+      }
+      // --- END: THE FIX ---
+    });
     
     if (!res.ok) throw new Error('Failed to fetch achievements');
     const data = await res.json();
@@ -27,6 +35,7 @@ async function getAchievements(): Promise<StrapiAchievement[]> {
 }
 
 // --- THE MAIN PAGE COMPONENT ---
+// (No changes needed in the component logic below this line)
 export default async function AchievementsPage() {
   const achievements = await getAchievements();
 
@@ -50,29 +59,28 @@ export default async function AchievementsPage() {
         {Object.keys(groupedAchievements).length > 0 ? (
           Object.keys(groupedAchievements).map(year => (
             <section key={year}>
-  <h2 className="text-4xl font-semibold mb-6 border-l-4 border-white pl-4">{year}</h2>
-  <div className="space-y-8">
-    {groupedAchievements[parseInt(year)].map(achievement => (
-      <div
-        key={achievement.id}
-        className="bg-gray-900 border border-gray-700 rounded-lg p-6"
-      >
-        <h3 className="text-2xl font-bold mb-3">{achievement.title}</h3>
+              <h2 className="text-4xl font-semibold mb-6 border-l-4 border-white pl-4">{year}</h2>
+              <div className="space-y-8">
+                {groupedAchievements[parseInt(year)].map(achievement => (
+                  <div
+                    key={achievement.id}
+                    className="bg-gray-900 border border-gray-700 rounded-lg p-6"
+                  >
+                    <h3 className="text-2xl font-bold mb-3">{achievement.title}</h3>
 
-        <article className="prose prose-invert max-w-none">
-          <ReactMarkdown>{achievement.details}</ReactMarkdown>
-        </article>
+                    <article className="prose prose-invert max-w-none">
+                      <ReactMarkdown>{achievement.details}</ReactMarkdown>
+                    </article>
 
-        {achievement.team_members && (
-          <p className="text-gray-400 mt-4">
-            <strong>Team:</strong> {achievement.team_members}
-          </p>
-        )}
-      </div>
-    ))}
-  </div>
-</section>
-
+                    {achievement.team_members && (
+                      <p className="text-gray-400 mt-4">
+                        <strong>Team:</strong> {achievement.team_members}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </section>
           ))
         ) : (
           <p className="text-center text-gray-400">No achievements have been recorded yet.</p>
