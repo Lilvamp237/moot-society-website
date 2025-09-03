@@ -1,11 +1,11 @@
 // src/app/gallery/page.tsx
-'use client'; // This must be a Client Component for the lightbox state
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Lightbox from '@/components/Lightbox'; // Import our new component
+import Lightbox from '@/components/Lightbox';
 
-// --- TYPE DEFINITIONS ---
+// --- TYPE DEFINITIONS (Unchanged) ---
 interface StrapiImage {
   id: number;
   url: string;
@@ -15,8 +15,8 @@ interface GalleryItem {
   id: number;
   title: string;
   description: string;
-  Category: string; // The category field from Strapi
-  image: StrapiImage[]; // An array of images
+  Category: string;
+  image: StrapiImage[];
 }
 
 // --- THE MAIN PAGE COMPONENT ---
@@ -24,25 +24,21 @@ export default function GalleryPage() {
   const [items, setItems] = useState<GalleryItem[]>([]);
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
-  // Fetch data on the client side
   useEffect(() => {
     async function getGalleryItems() {
       try {
-        // IMPORTANT: Replace 'gallery-items' with your actual API ID!
-        const apiEndpoint = 'gallery-items'; // <--- CHANGE THIS IF YOURS IS DIFFERENT
-        // CRITICAL: ?populate=* tells Strapi to include the image data
+        const apiEndpoint = 'gallery-items';
         const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/${apiEndpoint}?populate=*`);
         if (!res.ok) throw new Error('Failed to fetch gallery items');
         const data = await res.json();
         
-        // Strapi's 'Multiple Media' field is structured differently, we need to flatten it
         const formattedData = data.data.map((item: any) => ({
           ...item,
-          image: item.image.map((img: any) => ({
+          image: Array.isArray(item.image) ? item.image.map((img: any) => ({
             id: img.id,
             url: img.url,
             alternativeText: img.alternativeText
-          }))
+          })) : []
         }));
         setItems(formattedData);
 
@@ -53,7 +49,6 @@ export default function GalleryPage() {
     getGalleryItems();
   }, []);
 
-  // Group items by category
   const groupedItems: { [category: string]: GalleryItem[] } = {};
   items.forEach(item => {
     const category = item.Category;
@@ -75,9 +70,15 @@ export default function GalleryPage() {
               <h2 className="text-3xl font-semibold mb-6 border-l-4 border-white pl-4">{category}</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {groupedItems[category].map(item =>
-                  // Loop through the array of images for each item
-                  item.image.map(img => {
-                    const fullImageUrl = `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${img.url}`;
+                  item.image && item.image.map(img => {
+                    // --- START: THIS IS THE FIX ---
+                    let fullImageUrl = '/placeholder.jpg'; // Default placeholder
+                    if (img.url) {
+                      const isAbsoluteUrl = img.url.startsWith('http') || img.url.startsWith('//');
+                      fullImageUrl = isAbsoluteUrl ? img.url : `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${img.url}`;
+                    }
+                    // --- END: THIS IS THE FIX ---
+                    
                     return (
                       <div
                         key={img.id}
@@ -87,9 +88,9 @@ export default function GalleryPage() {
                         <Image
                           src={fullImageUrl}
                           alt={img.alternativeText || item.title}
-                          layout="fill"
-                          objectFit="cover"
-                          className="rounded-lg group-hover:opacity-75 transition-opacity"
+                          fill
+                          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                          className="object-cover rounded-lg group-hover:opacity-75 transition-opacity"
                         />
                       </div>
                     );
@@ -103,7 +104,6 @@ export default function GalleryPage() {
         )}
       </div>
       
-      {/* Conditionally render the lightbox */}
       {lightboxImage && <Lightbox imageUrl={lightboxImage} onClose={() => setLightboxImage(null)} />}
     </div>
   );
