@@ -9,7 +9,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      // We have removed the broken keyframes and animation sections.
+      // --- START: ADD THE NEW FONT FAMILY ---
+      fontFamily: {
+        // This creates the 'font-lora' utility class
+        lora: ['var(--font-lora)'], 
+      },
+      // --- END: ADD THE NEW FONT FAMILY ---
     },
   },
   plugins: [require("@tailwindcss/typography")],

@@ -7,41 +7,50 @@ import AnimatedSection from '@/components/AnimatedSection';
 export default function HomePage() {
   return (
     <div>
-      {/* Hero Section */}
+      {/* --- START: CORRECTED HERO STRUCTURE --- */}
+
+      {/* Part 1: Top Text Section (Centered) */}
       <section className="flex flex-col justify-center items-center text-center py-20 px-4 overflow-hidden">
         <div className="space-y-6 md:space-y-8">
-          {/* Each element is now wrapped in AnimatedSection with a different delay */}
           <AnimatedSection delay={0}>
-            <h1 className="font-serif text-3xl md:text-5xl font-bold uppercase leading-tight tracking-wider">
-              Ideas Connect
+            <h1 className="font-lora text-3xl md:text-5xl font-bold uppercase leading-tight tracking-wider">
+              Sharpening Minds
             </h1>
           </AnimatedSection>
           <AnimatedSection delay={200}>
-            <h2 className="text-2xl md:text-4xl font-medium uppercase border-2 border-white rounded-full px-8 py-4 inline-block leading-snug">
-              Through Strategy
+            <h2 className="font-lora text-2xl md:text-4xl font-medium uppercase border-2 border-white rounded-full px-8 py-4 inline-block leading-snug">
+               Perfecting Advocacy
             </h2>
           </AnimatedSection>
-          <AnimatedSection delay={400}>
-            <div className="mt-12 w-full max-w-6xl mx-auto">
-              <Image
-                src="/coverpage111.jpg"
-                alt="Moot Society members in court"
-                width={4160}
-                height={2289}
-                className="rounded-lg shadow-xl"
-                priority
-              />
-            </div>
-          </AnimatedSection>
-          <AnimatedSection delay={600}>
-            <p className="mt-12 text-2xl md:text-3xl text-gray-300 max-w-3xl mx-auto leading-snug font-bold">
+        </div>
+      </section>
+
+      {/* Part 2: Full-Width Image Strip */}
+      <AnimatedSection delay={400}>
+        <div className="w-full my-12">
+          <Image
+            src="/coverpage111.jpg"
+            alt="Moot Society members in court"
+            width={4160}
+            height={2289}
+            className="w-full h-auto max-h-[60vh] object-cover"
+            priority
+          />
+        </div>
+      </AnimatedSection>
+
+      {/* Part 3: Bottom Welcome Text (Centered) */}
+      <section className="flex justify-center text-center px-4">
+        <AnimatedSection delay={0}>
+            <p className="font-lora mt-4 mb-16 text-2xl md:text-3xl text-gray-300 max-w-3xl mx-auto leading-snug font-bold">
               Welcome to the official home of the Moot Society of Sri Lanka Law College.
               <br />
               Cultivating the next generation of legal advocates.
             </p>
-          </AnimatedSection>
-        </div>
+        </AnimatedSection>
       </section>
+
+      {/* --- END: CORRECTED HERO STRUCTURE --- */}
 
       {/* Logo Separator */}
       <section className="my-8 flex justify-center">
