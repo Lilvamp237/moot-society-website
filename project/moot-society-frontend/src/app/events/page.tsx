@@ -16,10 +16,21 @@ interface StrapiEvent {
 }
 // --- END: CORRECTED TYPE DEFINITIONS ---
 
+// src/app/events/page.tsx -> EventCard component
+
 const EventCard = ({ event, onReadMoreClick }: { event: StrapiEvent; onReadMoreClick: () => void; }) => {
-  // Access properties directly from the event object
   const imageUrl = event.BannerImage?.url;
-  const fullImageUrl = imageUrl ? `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${imageUrl}` : '/placeholder.jpg';
+  
+  // --- START: THE FIX FOR CLOUDINARY ---
+  let fullImageUrl = '/placeholder.jpg'; // Default placeholder
+  if (imageUrl) {
+    // Check if the URL is already absolute (starts with http or //)
+    const isAbsoluteUrl = imageUrl.startsWith('http') || imageUrl.startsWith('//');
+    // If it's absolute (from Cloudinary), use it directly. Otherwise, build the full URL.
+    fullImageUrl = isAbsoluteUrl ? imageUrl : `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${imageUrl}`;
+  }
+  // --- END: THE FIX FOR CLOUDINARY ---
+  
   const altText = event.BannerImage?.alternativeText || event.Title;
   const snippet = event.Description.substring(0, 150) + '...';
 
