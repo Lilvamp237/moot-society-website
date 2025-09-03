@@ -1,5 +1,4 @@
 // next.config.ts
-
 import type { NextConfig } from 'next';
 
 const config: NextConfig = {
@@ -7,10 +6,12 @@ const config: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'http',
+        // --- THIS IS THE FIX ---
+        protocol: 'https', // Changed from 'http' to 'https'
+        // --- END OF THE FIX ---
         hostname: 'res.cloudinary.com',
         port: '',
-        pathname: '/**', // Allows any image from the 'uploads' folder
+        pathname: '/**',
       },
     ],
   },
