@@ -1,12 +1,15 @@
 // src/app/events/page.tsx
-'use client'; 
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import EventModal from '@/components/EventModal';
 
-// --- START: CORRECTED TYPE DEFINITIONS (FLAT) ---
-interface StrapiImage { url: string; alternativeText?: string | null; }
+// --- TYPES ---
+interface StrapiImage {
+  url: string;
+  alternativeText?: string | null;
+}
 interface StrapiEvent {
   id: number;
   Title: string;
@@ -14,12 +17,22 @@ interface StrapiEvent {
   BannerImage: StrapiImage;
   EventType: 'Competition' | 'Special_Event';
 }
-// --- END: CORRECTED TYPE DEFINITIONS ---
 
-const EventCard = ({ event, onReadMoreClick }: { event: StrapiEvent; onReadMoreClick: () => void; }) => {
-  // Access properties directly from the event object
+// --- EVENT CARD ---
+const EventCard = ({
+  event,
+  onReadMoreClick,
+}: {
+  event: StrapiEvent;
+  onReadMoreClick: () => void;
+}) => {
   const imageUrl = event.BannerImage?.url;
-  const fullImageUrl = imageUrl ? `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${imageUrl}` : '/placeholder.jpg';
+
+  // Handle both relative (Strapi local) & full URLs (Cloudinary)
+  const fullImageUrl = imageUrl?.startsWith('http')
+    ? imageUrl
+    : `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${imageUrl}`;
+
   const altText = event.BannerImage?.alternativeText || event.Title;
   const snippet = event.Description.substring(0, 150) + '...';
 
@@ -50,6 +63,7 @@ const EventCard = ({ event, onReadMoreClick }: { event: StrapiEvent; onReadMoreC
   );
 };
 
+// --- MAIN PAGE ---
 export default function EventsPage() {
   const [events, setEvents] = useState<StrapiEvent[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<StrapiEvent | null>(null);
@@ -57,21 +71,42 @@ export default function EventsPage() {
   useEffect(() => {
     async function fetchEvents() {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/events?populate=*`);
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/events?populate=*`
+        );
         if (!res.ok) throw new Error('Failed to fetch data');
-        const data = await res.json();
-        // Use the raw data directly, no more incorrect formatting
-        setEvents(data.data);
+        const json = await res.json();
+
+        // --- Flatten the Strapi response ---
+        const formatted: StrapiEvent[] = json.data.map((item: any) => {
+          const attrs = item.attributes;
+          return {
+            id: item.id,
+            Title: attrs.Title,
+            Description: attrs.Description,
+            EventType: attrs.EventType,
+            BannerImage: {
+              url: attrs.BannerImage?.data?.attributes?.url || '',
+              alternativeText:
+                attrs.BannerImage?.data?.attributes?.alternativeText || null,
+            },
+          };
+        });
+
+        setEvents(formatted);
       } catch (error) {
-        console.error("Error fetching events:", error);
+        console.error('Error fetching events:', error);
       }
     }
     fetchEvents();
   }, []);
 
-  // --- THE FIX IS HERE: Filter by accessing event.EventType directly ---
-  const competitions = events.filter(event => event.EventType === 'Competition');
-  const specialEvents = events.filter(event => event.EventType === 'Special_Event');
+  const competitions = events.filter(
+    (event) => event.EventType === 'Competition'
+  );
+  const specialEvents = events.filter(
+    (event) => event.EventType === 'Special_Event'
+  );
 
   return (
     <div className="container mx-auto p-4 py-8">
@@ -80,28 +115,40 @@ export default function EventsPage() {
       </h1>
 
       <section>
-        <h2 className="text-3xl font-semibold mb-6 border-l-4 border-white pl-4">Competitions</h2>
+        <h2 className="text-3xl font-semibold mb-6 border-l-4 border-white pl-4">
+          Competitions
+        </h2>
         {competitions.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {competitions.map((event) => (
-              <EventCard key={event.id} event={event} onReadMoreClick={() => setSelectedEvent(event)} />
+              <EventCard
+                key={event.id}
+                event={event}
+                onReadMoreClick={() => setSelectedEvent(event)}
+              />
             ))}
           </div>
         ) : (
-          <p className="text-gray-400 ml-4">Loading competitions...</p>
+          <p className="text-gray-400 ml-4">No competitions available.</p>
         )}
       </section>
 
       <section className="mt-16">
-        <h2 className="text-3xl font-semibold mb-6 border-l-4 border-white pl-4">Special Events</h2>
+        <h2 className="text-3xl font-semibold mb-6 border-l-4 border-white pl-4">
+          Special Events
+        </h2>
         {specialEvents.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {specialEvents.map((event) => (
-              <EventCard key={event.id} event={event} onReadMoreClick={() => setSelectedEvent(event)} />
+              <EventCard
+                key={event.id}
+                event={event}
+                onReadMoreClick={() => setSelectedEvent(event)}
+              />
             ))}
           </div>
         ) : (
-          <p className="text-gray-400 ml-4">Loading special events...</p>
+          <p className="text-gray-400 ml-4">No special events available.</p>
         )}
       </section>
 
