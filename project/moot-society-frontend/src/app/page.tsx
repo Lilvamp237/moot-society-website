@@ -24,7 +24,7 @@ export default function HomePage() {
           <AnimatedSection delay={400}>
             <div className="mt-12 w-full max-w-6xl mx-auto">
               <Image
-                src="/coverpage12.jpg"
+                src="/coverpage111.jpg"
                 alt="Moot Society members in court"
                 width={4160}
                 height={2289}
