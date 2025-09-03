@@ -1,11 +1,12 @@
 // src/app/layout.tsx
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+// --- 1. IMPORT LORA FONT ---
+import { Inter, Playfair_Display, Lora } from "next/font/google"; 
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Preloader from "@/components/Preloader";
-import ScrollToTop from "@/components/ScrollToTop"; // <-- 1. IMPORT THE SCROLL COMPONENT
+import ScrollToTop from "@/components/ScrollToTop";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -15,6 +16,12 @@ const inter = Inter({
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: '--font-playfair',
+});
+
+// --- 2. CONFIGURE THE LORA FONT ---
+const lora = Lora({
+  subsets: ["latin"],
+  variable: '--font-lora', // We'll use this CSS variable
 });
 
 export const metadata = {
@@ -28,10 +35,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
-      {/* --- THE FIX IS HERE: Added 'bg-black' and 'text-white' back in --- */}
+    // --- 3. ADD THE LORA VARIABLE TO THE HTML TAG ---
+    <html lang="en" className={`${inter.variable} ${playfair.variable} ${lora.variable}`}>
       <body className="theme-blue flex flex-col min-h-screen bg-black text-white">
-        <ScrollToTop /> {/* <-- 2. ADD THE SCROLL COMPONENT HERE */}
+        <ScrollToTop />
         <Preloader />
         <Navbar />
         <main className="flex-grow">{children}</main>
