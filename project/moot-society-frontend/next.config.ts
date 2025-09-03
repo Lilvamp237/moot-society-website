@@ -8,9 +8,9 @@ const config: NextConfig = {
     remotePatterns: [
       {
         protocol: 'http',
-        hostname: 'localhost',
-        port: '1337',
-        pathname: '/uploads/**', // Allows any image from the 'uploads' folder
+        hostname: 'res.cloudinary.com',
+        port: '',
+        pathname: '/**', // Allows any image from the 'uploads' folder
       },
     ],
   },
