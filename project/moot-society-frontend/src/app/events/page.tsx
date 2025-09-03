@@ -55,37 +55,19 @@ export default function EventsPage() {
   const [selectedEvent, setSelectedEvent] = useState<StrapiEvent | null>(null);
 
   useEffect(() => {
-  async function fetchEvents() {
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/events?populate=*`
-      );
-      if (!res.ok) throw new Error("Failed to fetch data");
-      const json = await res.json();
-
-      // Flatten Strapi structure into StrapiEvent
-      const formattedEvents = json.data.map((item: any) => {
-        const attrs = item.attributes || {};
-        const bannerData = attrs.BannerImage?.data?.attributes;
-        return {
-          id: item.id,
-          Title: attrs.Title || "Untitled",
-          Description: attrs.Description || "",
-          EventType: attrs.EventType || "Competition",
-          BannerImage: bannerData
-            ? { url: bannerData.url, alternativeText: bannerData.alternativeText }
-            : null,
-        };
-      });
-
-      setEvents(formattedEvents);
-    } catch (error) {
-      console.error("Error fetching events:", error);
+    async function fetchEvents() {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/events?populate=*`);
+        if (!res.ok) throw new Error('Failed to fetch data');
+        const data = await res.json();
+        // Use the raw data directly, no more incorrect formatting
+        setEvents(data.data);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
     }
-  }
-  fetchEvents();
-}, []);
-
+    fetchEvents();
+  }, []);
 
   // --- THE FIX IS HERE: Filter by accessing event.EventType directly ---
   const competitions = events.filter(event => event.EventType === 'Competition');
