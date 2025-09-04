@@ -572,13 +572,11 @@ export interface ApiGalleryItemGalleryItem extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    Category: Schema.Attribute.Enumeration<
-      ['Throwbacks', 'Committee', 'Special Events']
-    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.Text;
+    event_name: Schema.Attribute.String;
     image: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
       true
@@ -589,11 +587,21 @@ export interface ApiGalleryItemGalleryItem extends Struct.CollectionTypeSchema {
       'api::gallery-item.gallery-item'
     > &
       Schema.Attribute.Private;
+    main_category: Schema.Attribute.Enumeration<
+      [
+        "Victor's Moot",
+        'Annual General Meetings',
+        'Bunty De Zoysa Memorial Moot Competition',
+        'Mediation and Negotiation Pool Selections',
+        'Committees',
+        'Other events',
+      ]
+    >;
     publishedAt: Schema.Attribute.DateTime;
-    title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    year: Schema.Attribute.Integer;
   };
 }
 

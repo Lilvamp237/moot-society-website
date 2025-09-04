@@ -11,15 +11,18 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "title": {
+    "event_name": {
       "type": "string"
     },
-    "Category": {
+    "main_category": {
       "type": "enumeration",
       "enum": [
-        "Throwbacks",
-        "Committee",
-        "Special Events"
+        "Victor's Moot",
+        "Annual General Meetings",
+        "Bunty De Zoysa Memorial Moot Competition",
+        "Mediation and Negotiation Pool Selections",
+        "Committees",
+        "Other events"
       ]
     },
     "image": {
@@ -34,6 +37,9 @@
     },
     "description": {
       "type": "text"
+    },
+    "year": {
+      "type": "integer"
     }
   }
 }
