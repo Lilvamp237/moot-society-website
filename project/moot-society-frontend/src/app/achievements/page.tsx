@@ -92,7 +92,7 @@ export default function AchievementsPage() {
         Our Achievements
       </h1>
       {/* Changed the wrapper to max-w-5xl to give the longer strips more room */}
-      <div className="max-w-5xl mx-auto space-y-4">
+      <div className="space-y-4">
         {sortedYears.length > 0 ? (
           sortedYears.map(year => (
             <YearAccordion
