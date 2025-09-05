@@ -14,7 +14,15 @@ interface StrapiFaq {
 
 async function getFaqs(): Promise<StrapiFaq[]> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/faqs`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/faqs`, {
+      // --- START: THIS IS THE FIX ---
+      // This tells Next.js to check for new data at most once every 60 seconds.
+      // Now it will behave just like your achievements page.
+      next: {
+        revalidate: 60 // Revalidate this data every 60 seconds
+      }
+      // --- END: THE FIX ---
+    });
     if (!res.ok) throw new Error('Failed to fetch FAQs');
     const data = await res.json();
     return data.data;
