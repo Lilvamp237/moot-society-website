@@ -25,7 +25,10 @@ const lora = Lora({
 });
 
 export const metadata = {
-  title: "Moot Society",
+  title: {
+    default: "Moot Society of Sri Lanka Law College",
+    template: "%s | Moot Society of Sri Lanka Law College",
+  },
   description: "Website for the college Moot Society",
 };
 

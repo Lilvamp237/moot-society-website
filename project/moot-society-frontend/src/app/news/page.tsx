@@ -75,7 +75,7 @@ export default function NewsPage() {
 
   return (
     <div className="container mx-auto p-4 py-8 md:p-8">
-      <h1 className="text-5xl font-bold text-center mb-16 uppercase tracking-wide">
+      <h1 className="text-4xl md:text-5xl font-bold text-center mb-16 uppercase tracking-wide">
         News & Notices
       </h1>
 
