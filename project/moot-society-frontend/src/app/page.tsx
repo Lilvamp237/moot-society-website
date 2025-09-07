@@ -76,10 +76,10 @@ export default function HomePage() {
                 The Moot Society of Sri Lanka Law College stands as one of the oldest and most prestigious student-led societies within the institution. Although the tradition of mooting at Sri Lanka Law College dates back to its establishment in 1873 following the formation of the Council of Legal Education - the Moot Society itself was officially founded in 1986.
               </p>
               <p className="text-lg md:text-xl text-gray-300 leading-relaxed mb-6 text-justify">
-                Recognizing the growing importance of advocacy training and experiential learning, a group of visionary students spearheaded the formation of the society to cultivate mooting skills and offer structured opportunities for aspiring legal professionals to gain courtroom experience. This initiative was led by Mr. ___________ and Ms. ____________, who served as the first President and Secretary, respectively.
+                Recognizing the growing importance of advocacy training and experiential learning, a group of visionary students spearheaded the formation of the society to cultivate mooting skills and offer structured opportunities for aspiring legal professionals to gain courtroom experience.
               </p>
               <p className="text-lg md:text-xl text-gray-300 leading-relaxed text-justify">
-                Their efforts were strongly supported by Mr. _______, the Principal of Sri Lanka Law College at the time, whose encouragement and guidance were instrumental in establishing the society. Since its inception, the Moot Society has continued to thrive as a platform dedicated to enhancing the oral and written advocacy skills of students, preparing them for the demands of legal practice both locally and internationally.
+                Their efforts were strongly supported by Mr. P.B. Rambukwella, the Principal of Sri Lanka Law College at the time, whose encouragement and guidance were instrumental in establishing the society. Since its inception, the Moot Society has continued to thrive as a platform dedicated to enhancing the oral and written advocacy skills of students, preparing them for the demands of legal practice both locally and internationally.
               </p>
             </div>
           </section>
@@ -92,10 +92,11 @@ export default function HomePage() {
             <p className="text-lg text-gray-300 mb-10">
               Dive into our upcoming events, past achievements, and rich history.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* --- THIS IS THE ONLY LINE THAT HAS CHANGED --- */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               <CtaCard href="/events" imageUrl="/cta-events.jpg" title="View Events" />
-              <CtaCard href="/gallery" imageUrl="/cta-gallery.jpg" title="See Gallery" />
               <CtaCard href="/achievements" imageUrl="/cta-achievements.jpg" title="Our Achievements" />
+              <CtaCard href="/gallery" imageUrl="/cta-gallery.jpg" title="See Gallery" />
             </div>
           </section>
         </AnimatedSection>
