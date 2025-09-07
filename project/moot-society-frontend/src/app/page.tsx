@@ -14,12 +14,12 @@ export default function HomePage() {
         <div className="space-y-6 md:space-y-8">
           <AnimatedSection delay={0}>
             <h1 className="font-lora text-3xl md:text-5xl font-bold uppercase leading-tight tracking-wider">
-              Sharpening Minds
+              Moot Society of Sri Lanka Law College
             </h1>
           </AnimatedSection>
           <AnimatedSection delay={200}>
             <h2 className="font-lora text-2xl md:text-4xl font-medium uppercase border-2 border-white rounded-full px-8 py-4 inline-block leading-snug">
-               Perfecting Advocacy
+               Since 1986
             </h2>
           </AnimatedSection>
         </div>
