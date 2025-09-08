@@ -44,6 +44,8 @@ export default function HomePage() {
         <AnimatedSection delay={0}>
             <p className="font-lora mt-4 mb-16 text-2xl md:text-3xl text-gray-300 max-w-3xl mx-auto leading-snug font-bold">
               Welcome to the official home of the Moot Society of Sri Lanka Law College.
+              <br />
+              Cultivating the next generation of legal advocates.
             </p>
         </AnimatedSection>
       </section>

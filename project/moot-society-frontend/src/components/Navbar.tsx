@@ -27,7 +27,7 @@ const Navbar = () => {
         <Link
           href="/"
           onClick={closeMenu}
-          className="flex items-center space-x-3 text-xl font-bold"
+          className="flex items-center space-x-3 text-base md:text-xl font-bold"
         >
           <Image
             src="/moot-logo.png"
