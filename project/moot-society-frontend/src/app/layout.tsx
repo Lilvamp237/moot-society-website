@@ -1,6 +1,5 @@
 // src/app/layout.tsx
 import type { Metadata } from "next";
-// --- 1. IMPORT LORA FONT ---
 import { Inter, Playfair_Display, Lora } from "next/font/google"; 
 import "./globals.css";
 import Navbar from "@/components/Navbar";
@@ -18,19 +17,37 @@ const playfair = Playfair_Display({
   variable: '--font-playfair',
 });
 
-// --- 2. CONFIGURE THE LORA FONT ---
 const lora = Lora({
   subsets: ["latin"],
-  variable: '--font-lora', // We'll use this CSS variable
+  variable: '--font-lora',
 });
 
-export const metadata = {
+// --- START: UPDATED METADATA FOR SEO ---
+export const metadata: Metadata = {
   title: {
     default: "Moot Society of Sri Lanka Law College",
-    template: "%s | Moot Society of Sri Lanka Law College",
+    template: "%s | Moot Society SLLC", // Shortened for cleaner browser tabs
   },
-  description: "Website for the college Moot Society",
+  // Keyword-rich description
+  description: "The official website of the law college moot society. Discover our events like The Victor's Moot, our achievements, and how to join.",
+  
+  // Social media sharing tags (Open Graph)
+  openGraph: {
+    title: 'Moot Society of Sri Lanka Law College',
+    description: 'Cultivating the next generation of legal advocates.',
+    url: 'https://www.sllcmootsociety.com', // Your final domain
+    siteName: 'Moot Society SLLC',
+    type: 'website',
+  },
+  
+  // Twitter sharing tags
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Moot Society of Sri Lanka Law College',
+    description: 'The official home for events, news, and achievements.',
+  },
 };
+// --- END: UPDATED METADATA FOR SEO ---
 
 export default function RootLayout({
   children,
@@ -38,8 +55,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // --- 3. ADD THE LORA VARIABLE TO THE HTML TAG ---
     <html lang="en" className={`${inter.variable} ${playfair.variable} ${lora.variable}`}>
+      
+      {/* --- ADD GOOGLE VERIFICATION TAG IN HEAD --- */}
+      <head>
+        {/* 
+          IMPORTANT: Replace 'YOUR_UNIQUE_CODE_FROM_GOOGLE' with the actual code 
+          you get from Google Search Console's HTML tag verification method.
+        */}
+        <meta name="google-site-verification" content="YOUR_UNIQUE_CODE_FROM_GOOGLE" />
+      </head>
+      {/* ------------------------------------------- */}
+
       <body className="theme-blue flex flex-col min-h-screen bg-black text-white">
         <ScrollToTop />
         <Preloader />
