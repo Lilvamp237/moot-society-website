@@ -63,7 +63,7 @@ export default function RootLayout({
           IMPORTANT: Replace 'YOUR_UNIQUE_CODE_FROM_GOOGLE' with the actual code 
           you get from Google Search Console's HTML tag verification method.
         */}
-        <meta name="google-site-verification" content="YOUR_UNIQUE_CODE_FROM_GOOGLE" />
+        <meta name="google-site-verification" content="google-site-verification: googleb5d553206fe94121.html" />
       </head>
       {/* ------------------------------------------- */}
 
